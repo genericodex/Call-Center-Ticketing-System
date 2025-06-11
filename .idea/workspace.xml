@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="efb82301-cb07-4b85-b27e-6931cdd08710" name="Changes" comment="">
-
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/TicketRepository.java" afterDir="false" />
-
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-
-      <change afterPath="$PROJECT_DIR$/services/CRUDService.java" afterDir="false" />
-
+      <change beforePath="$PROJECT_DIR$/code/src/services/CreateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/src/services/CreateService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +44,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "ft-crud-service",
+    "git-widget-placeholder": "ft-read-service",
     "last_opened_file_path": "X:/CODE/Call-Center-Ticketing-System",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
