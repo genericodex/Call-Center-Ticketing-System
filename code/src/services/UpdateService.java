@@ -22,11 +22,16 @@ public class UpdateService implements CRUDService {
             *
             * @param repository The TicketRepository instance to be used for ticket operations
      */
-
     public UpdateService(TicketRepository repository) {
         this.repository = repository;
     }
 
+    /**
+     * Updates an existing ticket in the system.
+     * Delegates the update operation to the repository layer.
+     *
+     * @param ticket The TicketModel object containing the updated ticket information
+     */
     @Override
     public void update(TicketModel ticket) {
         repository.updateTicket(ticket);
