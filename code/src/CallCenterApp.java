@@ -3,9 +3,23 @@ import repository.TicketRepository;
 import services.*;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Predicate;
 
+
+/**
+ * Main application class for the Call Center Ticketing System.
+ * Implements a console-based user interface for managing support tickets.
+ * Uses the Service pattern to handle different ticket operations.
+ */
 public class CallCenterApp {
+
+
+    /**
+     * Repository instance for ticket storage.
+     * Shared among all services to maintain data consistency.
+     * Service instances for different ticket operations.
+     * Each service handles a specific aspect of ticket management.
+     *
+     */
     private static TicketRepository repository = new TicketRepository();
     private static CreateService createService = new CreateService(repository);
     private static ReadService readService = new ReadService(repository);
@@ -36,6 +50,11 @@ public class CallCenterApp {
         }
     }
 
+
+    /**
+     * Displays the main menu options to the user.
+     * Lists all available operations in the ticketing system.
+     */
     private static void printMenu() {
         System.out.println("\nMain Menu:");
         System.out.println("1. Create New Ticket");
@@ -47,6 +66,14 @@ public class CallCenterApp {
         System.out.println("7. Exit System");
     }
 
+
+    /**
+     * Handles integer input from the user with validation.
+     * Continues prompting until a valid integer input is received.
+     *
+     * @param prompt Message to display to the user
+     * @return Valid integer input from user
+     */
     private static int getIntInput(String prompt) {
         System.out.print(prompt);
         while (!scanner.hasNextInt()) {
@@ -57,6 +84,11 @@ public class CallCenterApp {
         return scanner.nextInt();
     }
 
+
+    /**
+     * Handles the creation of a new ticket.
+     * Collects necessary information from the user and uses CreateService.
+     */
     private static void createTicket() {
         System.out.println("\n--- CREATE NEW TICKET ---");
         System.out.print("Customer Name: ");
@@ -83,6 +115,11 @@ public class CallCenterApp {
         System.out.println("\nTicket created successfully! ID: " + newTicket.getId());
     }
 
+
+    /**
+     * Displays all tickets in the system.
+     * Uses ReadService to retrieve and display ticket list.
+     */
     private static void viewAllTickets() {
         List<TicketModel> tickets = readService.readAll();
         if (tickets.isEmpty()) {
@@ -102,6 +139,10 @@ public class CallCenterApp {
         }
     }
 
+    /**
+     * Shows detailed information for a specific ticket.
+     * Uses ReadService to retrieve ticket by ID.
+     */
     private static void viewTicketDetails() {
         int id = getIntInput("\nEnter Ticket ID: ");
         scanner.nextLine();  // Consume newline
@@ -115,6 +156,12 @@ public class CallCenterApp {
         }
     }
 
+
+    /**
+     * Handles ticket update operations.
+     * Allows modification of status, priority, and comments.
+     * Uses UpdateService to persist changes.
+     */
     private static void updateTicket() {
         int id = getIntInput("\nEnter Ticket ID to update: ");
         scanner.nextLine();  // Consume newline
@@ -145,6 +192,11 @@ public class CallCenterApp {
         System.out.println("\nTicket updated successfully!");
     }
 
+
+    /**
+     * Handles ticket deletion.
+     * Confirms deletion and uses DeleteService to remove ticket.
+     */
     private static void deleteTicket() {
         int id = getIntInput("\nEnter Ticket ID to delete: ");
         scanner.nextLine();  // Consume newline
@@ -156,6 +208,11 @@ public class CallCenterApp {
         }
     }
 
+
+    /**
+     * Implements ticket search functionality.
+     * Allows searching by multiple criteria using SearchService.
+     */
     private static void searchTickets() {
         System.out.println("\n--- SEARCH TICKETS ---");
         System.out.print("Customer Name (leave blank to skip): ");
@@ -167,13 +224,14 @@ public class CallCenterApp {
         System.out.print("Status (leave blank to skip): ");
         String status = scanner.nextLine();
 
-        // Build search predicate
-        Predicate<TicketModel> predicate = ticket ->
-                (name.isEmpty() || ticket.getCustomerName().equalsIgnoreCase(name)) &&
-                        (category.isEmpty() || ticket.getCategory().equalsIgnoreCase(category)) &&
-                        (status.isEmpty() || ticket.getStatus().equalsIgnoreCase(status));
 
-        List<TicketModel> results = searchService.search(predicate);
+        List<TicketModel> results = searchService.searchByCriteria(
+                name.isEmpty() ? null : name,
+                category.isEmpty() ? null : category,
+                status.isEmpty() ? null : status,
+                null
+        );
+
 
         if (results.isEmpty()) {
             System.out.println("\nNo matching tickets found.");
