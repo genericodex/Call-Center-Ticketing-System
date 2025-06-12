@@ -3,69 +3,73 @@ package repository;
 import models.TicketModel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Repository class that manages the storage and operations of tickets.
- * Implements CRUD (Create, Read, Update, Delete) operations and search functionality.
+ * Implements CRUD operations and basic search functionality.
+ * This class serves as the data access layer for the ticket management system.
  */
-
 public class TicketRepository {
+
     /**
-     * List to store ticket objects. ArrayList provides dynamic sizing and indexed access.
-     * The diamond operator <> indicates type inference for generics
+     * In-memory storage for tickets using ArrayList.
+     * Provides dynamic sizing and indexed access to ticket objects.
      */
+    private List<TicketModel> tickets;
+    private int nextId;
 
-    private List<TicketModel> tickets = new ArrayList<>();
-    private int nextId = 1;
 
     /**
-     * Creates a new ticket and adds it to the repository.
+     * Constructs a new TicketRepository.
+     * Initializes an empty ticket list and sets the initial ID counter.
+     */
+    public TicketRepository() {
+        this.tickets = new ArrayList<>();
+        this.nextId = 1;
+    }
+
+    /**
+     * Creates a new ticket in the repository.
+     * Adds the ticket to the internal list of tickets.
      *
-     * @param ticket The TicketModel object to be added
+     * @param ticket The TicketModel object to be stored
      */
-
-    // Create
     public void createTicket(TicketModel ticket) {
         tickets.add(ticket);
     }
 
     /**
      * Retrieves all tickets from the repository.
-     * Returns a new ArrayList to prevent external modification of the internal list.
+     * Returns a new ArrayList to prevent external modification of internal list.
      *
-     * @return A new List containing all tickets
+     * @return A new List containing copies of all stored tickets
      */
-
-    // Read
     public List<TicketModel> getAllTickets() {
         return new ArrayList<>(tickets);
     }
 
     /**
-     * Finds and returns a ticket by its ID.
-     * Uses Stream API for filtering and finding the matching ticket.
+     * Retrieves a specific ticket by its ID.
+     * Performs a sequential search through the tickets list.
      *
      * @param id The ID of the ticket to find
      * @return The matching TicketModel or null if not found
      */
-
     public TicketModel getTicketById(int id) {
-        return tickets.stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
+        for (TicketModel ticket : tickets) {
+            if (ticket.getId() == id) {
+                return ticket;
+            }
+        }
+        return null;
     }
-
 
     /**
      * Updates an existing ticket in the repository.
-     * Iterates through the list to find and replace the matching ticket.
+     * Replaces the old ticket with the updated version if found.
      *
      * @param updatedTicket The ticket with updated information
      */
-
     public void updateTicket(TicketModel updatedTicket) {
         for (int i = 0; i < tickets.size(); i++) {
             if (tickets.get(i).getId() == updatedTicket.getId()) {
@@ -77,35 +81,68 @@ public class TicketRepository {
 
     /**
      * Deletes a ticket from the repository by its ID.
-     * Uses removeIf with a lambda expression for conditional removal.
+     * Removes the first ticket found with the matching ID.
      *
      * @param id The ID of the ticket to delete
-     * @return true if a ticket was found and deleted, false otherwise
+     * @return true if ticket was found and deleted, false otherwise
      */
-
     public boolean deleteTicket(int id) {
-        return tickets.removeIf(t -> t.getId() == id);
+        for (int i = 0; i < tickets.size(); i++) {
+            if (tickets.get(i).getId() == id) {
+                tickets.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * Searches for tickets that match the given predicate.
-     * Uses Stream API for filtering and collecting results.
+     * Performs a multi-criteria search on tickets.
+     * Matches tickets against all non-null and non-empty criteria.
+     * Uses case-insensitive comparison for all string matches.
      *
-     * @param predicate A functional interface defining the search criteria
-     * @return List of tickets matching the predicate
+     * @param customerName The customer name to match (can be null or empty)
+     * @param category The category to match (can be null or empty)
+     * @param status The status to match (can be null or empty)
+     * @param priority The priority to match (can be null or empty)
+     * @return List of tickets matching all specified criteria
      */
+    public List<TicketModel> searchByCriteria(String customerName, String category,
+                                              String status, String priority) {
+        List<TicketModel> results = new ArrayList<>();
+        for (TicketModel ticket : tickets) {
+            boolean matches = true;
 
-    public List<TicketModel> searchTickets(Predicate<TicketModel> predicate) {
-        return tickets.stream().filter(predicate).collect(Collectors.toList());
+            if (customerName != null && !customerName.isEmpty()) {
+                matches = matches && ticket.getCustomerName()
+                        .equalsIgnoreCase(customerName);
+            }
+            if (category != null && !category.isEmpty()) {
+                matches = matches && ticket.getCategory()
+                        .equalsIgnoreCase(category);
+            }
+            if (status != null && !status.isEmpty()) {
+                matches = matches && ticket.getStatus()
+                        .equalsIgnoreCase(status);
+            }
+            if (priority != null && !priority.isEmpty()) {
+                matches = matches && ticket.getPriority()
+                        .equalsIgnoreCase(priority);
+            }
+
+            if (matches) {
+                results.add(ticket);
+            }
+        }
+        return results;
     }
 
     /**
      * Generates and returns the next available ticket ID.
-     * Uses post-increment operator to return the current value and then increment.
+     * Uses post-increment to ensure unique IDs.
      *
-     * @return The next available ID
+     * @return The next available ticket ID
      */
-
     public int getNextId() {
         return nextId++;
     }
