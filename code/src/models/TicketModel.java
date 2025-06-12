@@ -21,8 +21,6 @@ public class TicketModel {
      * @param category Category of the ticket
      * @param description Detailed description of the issue
      */
-
-
     public TicketModel(int id, String customerName, String contactInfo,
                       String category, String description) {
             this.id = id;

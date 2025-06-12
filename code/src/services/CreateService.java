@@ -8,7 +8,7 @@ import repository.TicketRepository;
  * Abstract service class implementing the CRUDService interface, specifically focused on ticket creation.
  * This class demonstrates the Single Responsibility Principle by handling only creation-related operations.
  */
-public abstract class CreateService implements CRUDService {
+public class CreateService implements CRUDService {
 
     /**
      * Repository instance for ticket data operations.
