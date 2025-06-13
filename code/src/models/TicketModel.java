@@ -43,12 +43,11 @@ public class TicketModel {
         public String getPriority() { return priority; }
         public String getComments() { return comments; }
 
-    // Setter methods - only for fields that should be updatable
+    // Setter methods - only for fields that should be allowed to be updated
     /**
      * Updates the ticket's status.
      * @param status new status value
      */
-
     public void setStatus(String status) { this.status = status; }
 
     /**
@@ -77,7 +76,6 @@ public class TicketModel {
      *
      * @return formatted string containing all ticket information
      */
-
     @Override
     public String toString() {
             return "ID: " + id +
