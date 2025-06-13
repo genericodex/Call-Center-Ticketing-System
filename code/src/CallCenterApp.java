@@ -4,7 +4,6 @@ import services.*;
 import java.util.List;
 import java.util.Scanner;
 
-
 /**
  * Main application class for the Call Center Ticketing System.
  * Implements a console-based user interface for managing support tickets.
